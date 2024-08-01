@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconnaissance Faciale - Vidéo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/facial_recognition.jpg') }}" class="title-image" alt="Logo">
+            Reconnaissance Faciale
+        </a>
+    </nav>
+    <div class="container">
+        <div class="video-header">
+            <h1>Reconnaissance Faciale en Direct</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-control">Retour à l'accueil</a>
+        </div>
+        <div class="video-container mt-4">
+            <video id="videoFeed" autoplay></video>
+        </div>
+        <div class="controls text-center mt-4">
+            <button id="startRecognition" class="btn btn-control">Démarrer la reconnaissance</button>
+            <button id="stopRecognition" class="btn btn-control">Arrêter la reconnaissance</button>
+        </div>
+        <div class="alert-container mt-4">
+            <div id="alertMessage" class="alert alert-info" style="display: none;"></div>
+        </div>
+        <div class="footer mt-4">
+            <p>&copy; 2024 Reconnaissance Faciale. Tous droits réservés.</p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript pour gérer le flux vidéo
+        const video = document.getElementById('videoFeed');
+        const startButton = document.getElementById('startRecognition');
+        const stopButton = document.getElementById('stopRecognition');
+        const alertMessage = document.getElementById('alertMessage');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                alertMessage.textContent = 'Erreur d\'accès à la caméra : ' + err.message;
+                alertMessage.style.display = 'block';
+            });
+
+        startButton.addEventListener('click', () => {
+            alertMessage.textContent = 'Reconnaissance faciale démarrée.';
+            alertMessage.className = 'alert alert-success';
+            alertMessage.style.display = 'block';
+        });
+
+        stopButton.addEventListener('click', () => {
+            alertMessage.textContent = 'Reconnaissance faciale arrêtée.';
+            alertMessage.className = 'alert alert-warning';
+            alertMessage.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
